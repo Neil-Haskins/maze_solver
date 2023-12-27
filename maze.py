@@ -24,6 +24,9 @@ class Maze:
         self.win = win
         self.seed = seed if seed is None else random.seed(seed)
         self._create_cells()
+        self._break_entrance_and_exit()
+        self._break_walls_r(0, 0)
+        self._reset_cells_visited()
 
     def _create_cells(self):
         self._cells = []
@@ -35,8 +38,6 @@ class Maze:
         for i in range(self.num_cols):
             for j in range(self.num_rows):
                 self._draw_cell(i, j)
-        self._break_entrance_and_exit()
-        self._break_walls_r(0, 0)
 
     def _draw_cell(self, i, j):
         x1 = self.x1 + (self.cell_size_x * i)
@@ -89,4 +90,8 @@ class Maze:
                 next_cell.break_wall("top")
             self._break_walls_r(direction[0], direction[1])
 
+    def _reset_cells_visited(self):
+        for col in self._cells:
+            for cell in col:
+                cell.visited = False
 

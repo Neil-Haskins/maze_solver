@@ -1,7 +1,14 @@
 from tkinter import Tk, BOTH, Canvas
 
 class Window:
-    def __init__(self, width, height, colors):
+    def __init__(self, width, height, colors=None):
+        if colors is None:
+            colors = {
+                "bg": "white",
+                "wall": "black",
+                "path": "red",
+                "path_undo": "grey"
+            }
         self._bg_color = colors["bg"]
         self._wall_color = colors["wall"]
         self._path_color = colors["path"]

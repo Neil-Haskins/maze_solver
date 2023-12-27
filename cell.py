@@ -51,6 +51,8 @@ class Cell:
             self._win.draw_line(line, self._win._path_color)
 
     def break_wall(self, wall):
+        if self._win is None:
+            return
         lines = [
             Line(Point(self._x1, self._y1), Point(self._x2, self._y1)),
             Line(Point(self._x2, self._y1), Point(self._x2, self._y2)),
