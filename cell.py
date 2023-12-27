@@ -61,16 +61,16 @@ class Cell:
         ]
         color = self._win._bg_color
         if wall == "top":
-            self.has_top_wall == False
+            self.has_top_wall = False
             self._win.draw_line(lines[0], color)
         elif wall == "right":
-            self.has_right_wall == False
+            self.has_right_wall = False
             self._win.draw_line(lines[1], color)
         elif wall == "bottom":
-            self.has_bottom_wall == False
+            self.has_bottom_wall = False
             self._win.draw_line(lines[2], color)
         elif wall == "left":
-            self.has_left_wall == False
+            self.has_left_wall = False
             self._win.draw_line(lines[3], color)
         else:
             raise Exception("Invalid value for wall, must be one of top, right, bottom, or left.")
