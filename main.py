@@ -1,39 +1,6 @@
 from graphics import Window, Line, Point
-
-
-class Cell:
-    def __init__(self, x1, y1, x2, y2, wall_t, wall_r, wall_b, wall_l, window):
-        self.has_top_wall = wall_t
-        self.has_right_wall = wall_r
-        self.has_bottom_wall = wall_b
-        self.has_left_wall = wall_l
-        self._x1 = x1
-        self._x2 = x2
-        self._y1 = y1
-        self._y2 = y2
-        self._win = window
-
-    def draw(self, x1, y1, x2, y2):
-        points = [
-            Point(x1, y1),
-            Point(x2, y1),
-            Point(x2, y2),
-            Point(x1, y2)
-        ]
-        color = "black"
-        if self.has_top_wall:
-            self._win.draw_line(Line(points[0], points[1]), color)
-        if self.has_right_wall:
-            self._win.draw_line(Line(points[1], points[2]), color)
-        if self.has_bottom_wall:
-            self._win.draw_line(Line(points[2], points[3]), color)
-        if self.has_left_wall:
-            self._win.draw_line(Line(points[3], points[0]), color)
-
-
-
-
-
+from cell import Cell
+from maze import Maze
 
 
 def main():
@@ -43,15 +10,27 @@ def main():
     line = Line(p1, p2)
     win.draw_line(line, "red")
 
-    cell_1 = Cell(0, 0, 30, 30, True, True, True, False, win)
-    cell_1.draw(0, 0, 30, 30)
+    # cell_1 = Cell(win)
+    # cell_1.has_right_wall = False
+    # cell_1.draw(5, 5, 35, 35)
 
-    cell_2 = Cell(25, 25, 85, 85, True, False, True, True, win)
-    cell_2.draw(25, 25, 85, 85)
+    # cell_2 = Cell(win)
+    # cell_2.has_left_wall = False
+    # cell_2.has_bottom_wall = False
+    # cell_2.draw(35, 5, 65, 35)
+
+    # cell_3 = Cell(win)
+    # cell_3.has_left_wall = False
+    # cell_3.has_top_wall = False
+    # cell_3.draw(35, 35, 65, 65)
+
+    # cell_1.draw_move(cell_2)
+    # cell_2.draw_move(cell_3)
+    # cell_3.draw_move(cell_2, True)
+
+    maze = Maze(10, 15, 19, 26, 30, 30, win)
 
     win.wait_for_close()
-
-
 
 
 
