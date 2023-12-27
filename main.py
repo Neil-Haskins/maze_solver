@@ -11,7 +11,7 @@ def main():
         "path_undo": "grey"
     }
     win = Window(800, 600, colors)
-    maze = Maze(10, 15, 19, 26, 30, 30, win)
+    maze = Maze(10, 15, 19, 26, 30, 30, win, 0)
 
     win.wait_for_close()
 

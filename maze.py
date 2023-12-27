@@ -1,6 +1,7 @@
 from tkinter import Tk, BOTH, Canvas
 import time
 from cell import Cell
+import random
 
 class Maze:
     def __init__(
@@ -12,6 +13,7 @@ class Maze:
         cell_size_x,
         cell_size_y,
         win=None,
+        seed=None
     ):
         self.x1 = x1
         self.y1 = y1
@@ -20,6 +22,7 @@ class Maze:
         self.cell_size_x = cell_size_x
         self.cell_size_y = cell_size_y
         self.win = win
+        self.seed = seed if seed is None else random.seed(seed)
         self._create_cells()
 
     def _create_cells(self):
@@ -33,6 +36,7 @@ class Maze:
             for j in range(self.num_rows):
                 self._draw_cell(i, j)
         self._break_entrance_and_exit()
+        self._break_walls_r(0, 0)
 
     def _draw_cell(self, i, j):
         x1 = self.x1 + (self.cell_size_x * i)
@@ -48,11 +52,41 @@ class Maze:
             return
         num_cells = len(self._cells) * len(self._cells[0])
         self.win.redraw()
-        time.sleep(min(0.05, 3 / num_cells))
+        time.sleep(min(0.05, 2 / num_cells))
 
     def _break_entrance_and_exit(self):
-        self._cells[0][0].has_top_wall = False
-        self._draw_cell(0, 0)
-        self._cells[-1][-1].has_bottom_wall = False
-        self._draw_cell(len(self._cells)-1, len(self._cells[0])-1)
+        self._cells[0][0].break_wall('top')
+        self._cells[-1][-1].break_wall('bottom')
+
+    def _break_walls_r(self, i, j):
+        current = self._cells[i][j]
+        current.visited = True
+        while True:
+            to_visit = []
+            if i >= 1 and self._cells[i-1][j].visited == False:
+                to_visit.append( (i-1,j) )
+            if i <= len(self._cells) - 2 and self._cells[i+1][j].visited == False:
+                to_visit.append( (i+1, j) )
+            if j >= 1 and self._cells[i][j-1].visited == False:
+                to_visit.append( (i, j-1) )
+            if j <= len(self._cells[0]) - 2 and self._cells[i][j+1].visited == False:
+                to_visit.append( (i, j+1) )
+            if len(to_visit) == 0:
+                break
+            direction = to_visit[random.randrange(len(to_visit))]
+            next_cell = self._cells[direction[0]][direction[1]]
+            if direction[0] == i-1:
+                current.break_wall("left")
+                next_cell.break_wall("right")
+            elif direction[0] == i+1:
+                current.break_wall("right")
+                next_cell.break_wall("left")
+            elif direction[1] == j-1:
+                current.break_wall("top")
+                next_cell.break_wall("bottom")
+            elif direction[1] == j+1:
+                current.break_wall("bottom")
+                next_cell.break_wall("top")
+            self._break_walls_r(direction[0], direction[1])
+
 
