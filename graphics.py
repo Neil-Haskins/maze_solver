@@ -1,10 +1,15 @@
 from tkinter import Tk, BOTH, Canvas
 
 class Window:
-    def __init__(self, width, height):
+    def __init__(self, width, height, colors):
+        self._bg_color = colors["bg"]
+        self._wall_color = colors["wall"]
+        self._path_color = colors["path"]
+        self._path_undo_color = colors["path_undo"]
+
         self.__root = Tk()
         self.__root.title("My maze solver")
-        self.__canvas = Canvas(self.__root, width=width, height=height)
+        self.__canvas = Canvas(self.__root, width=width, height=height, bg=self._bg_color)
         self.__canvas.pack()
         self.__running = False
         self.__root.protocol("WM_DELETE_WINDOW", self.close)

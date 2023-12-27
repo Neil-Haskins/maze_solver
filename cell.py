@@ -1,7 +1,7 @@
 from graphics import Window, Line, Point
 
 class Cell:
-    def __init__(self, window):
+    def __init__(self, window=None):
         self.has_top_wall = True
         self.has_right_wall = True
         self.has_bottom_wall = True
@@ -13,6 +13,8 @@ class Cell:
         self._win = window
 
     def draw(self, x1, y1, x2, y2):
+        if self._win is None:
+            return
         self._x1 = x1
         self._x2 = x2
         self._y1 = y1
@@ -23,23 +25,26 @@ class Cell:
             Point(x2, y2),
             Point(x1, y2)
         ]
-        color = "black"
-        if self.has_top_wall:
-            self._win.draw_line(Line(points[0], points[1]), color)
-        if self.has_right_wall:
-            self._win.draw_line(Line(points[1], points[2]), color)
-        if self.has_bottom_wall:
-            self._win.draw_line(Line(points[2], points[3]), color)
-        if self.has_left_wall:
-            self._win.draw_line(Line(points[3], points[0]), color)
+        wall_color = self._win._wall_color
+        blank_color = self._win._bg_color
+        top_color = wall_color if self.has_top_wall else blank_color
+        right_color = wall_color if self.has_right_wall else blank_color
+        bottom_color = wall_color if self.has_bottom_wall else blank_color
+        left_color = wall_color if self.has_left_wall else blank_color
+        self._win.draw_line(Line(points[0], points[1]), top_color)
+        self._win.draw_line(Line(points[1], points[2]), right_color)
+        self._win.draw_line(Line(points[2], points[3]), bottom_color)
+        self._win.draw_line(Line(points[3], points[0]), left_color)
     
     def draw_move(self, to_cell, undo=False):
+        if self._win is None:
+            return
         x1 = (self._x1 + self._x2) / 2
         y1 = (self._y1 + self._y2) / 2
         x2 = (to_cell._x1 + to_cell._x2) / 2
         y2 = (to_cell._y1 + to_cell._y2) / 2
         line = Line(Point(x1, y1), Point(x2, y2))
         if undo:
-            self._win.draw_line(line, "grey")
+            self._win.draw_line(line, self._win._path_undo_color)
         else:
-            self._win.draw_line(line, "red")
+            self._win.draw_line(line, self._win._path_color)
